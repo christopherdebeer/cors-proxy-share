@@ -5,8 +5,12 @@ export default async function handler(req, res) {
   const url = headers['my-url'];
 
   if (!url) {
+    console.log("no url", {method, headers, body});
+    res.setHeader('Access-Control-Allow-Origin', '*');
     return res.status(400).json({ type: 'error', message: 'Missing URL in headers' });
   }
+
+  console.log("making request", {method, headers, body});
 
   const axiosConfig = {
     method: method.toLowerCase(),
@@ -25,7 +29,8 @@ export default async function handler(req, res) {
 
     response.data.pipe(res);
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(500).json({ type: 'error', message: error.message });
   }
 }
