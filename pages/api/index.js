@@ -10,6 +10,9 @@ const secret = process.env.SECRET; // Get the secret from environment variables
 
 app.use(bodyParser.json());
 
+app.get('/test', (req,res) => {
+  res.status(200).json({status: "ok"})
+})
 app.get('/api/test', (req,res) => {
   res.status(200).json({status: "ok"})
 })
@@ -70,7 +73,7 @@ app.use((req, res, next) => {
 });
 
 // Dynamically load routes
-app.use('/', loadRoutes);
+app.use('*', loadRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
