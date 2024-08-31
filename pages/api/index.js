@@ -14,7 +14,7 @@ app.get('/test', (req,res) => {
   res.status(200).json({status: ok})
 })
 
-app.post('/api/update', (req, res) => {
+app.post('/update', (req, res) => {
   const { route, jsFile } = req.body;
   const secretKey = req.headers.secret; // Get the secret key from the request header
 
@@ -70,7 +70,7 @@ app.use((req, res, next) => {
 });
 
 // Dynamically load routes
-app.use('/api', loadRoutes);
+app.use('/', loadRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
