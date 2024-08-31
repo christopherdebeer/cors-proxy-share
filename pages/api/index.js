@@ -10,11 +10,11 @@ const secret = process.env.SECRET; // Get the secret from environment variables
 
 app.use(bodyParser.json());
 
-app.get('/test', (req,res) => {
-  res.status(200).json({status: ok})
+app.get('/api/test', (req,res) => {
+  res.status(200).json({status: "ok"})
 })
 
-app.post('/update', (req, res) => {
+app.post('/api/update', (req, res) => {
   const { route, jsFile } = req.body;
   const secretKey = req.headers.secret; // Get the secret key from the request header
 
