@@ -10,14 +10,7 @@ const secret = process.env.SECRET; // Get the secret from environment variables
 
 app.use(bodyParser.json());
 
-app.get('/test', (req,res) => {
-  res.status(200).json({status: "ok"})
-})
-app.get('/api/test', (req,res) => {
-  res.status(200).json({status: "ok"})
-})
-
-app.post('/api/update', (req, res) => {
+const update = (req, res) => {
   const { route, jsFile } = req.body;
   const secretKey = req.headers.secret; // Get the secret key from the request header
 
@@ -30,7 +23,7 @@ app.post('/api/update', (req, res) => {
   }
 
   try {
-    const filePath = path.join(__dirname, 'routes', `${route}.js`);
+    const filePath = path.join(__dirname, '${route}', `index.js`);
     fs.writeFileSync(filePath, jsFile);
     console.log(`File written to ${filePath}`);
     res.json({ message: 'File updated successfully' });
@@ -38,11 +31,19 @@ app.post('/api/update', (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Failed to update file' });
   }
-});
+};
 
 // Function to dynamically load and execute route handlers
 function loadRoutes(req, res, next) {
-  console.log(`loading route for ${req.path}`)
+  const params = req.query;
+  const method = req.method;
+  console.log(params, method);
+  console.log(`loading route for ${method} ${req.path} ${JSON.stringify(params)}`)
+
+  if (method === "post" && params.update) {
+    return update(req, res);
+  }
+  
   const routePath = path.join(__dirname, 'routes', `${req.path}.js`);
 
   try {
