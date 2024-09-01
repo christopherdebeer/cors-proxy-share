@@ -1,6 +1,6 @@
-const cors = require('../cors.js');
+const cors = require('./cors');
 
-module.exports = function (req, res) {
-  cors(req,res);
+module.exports = (req, res) => {
+  if (cors(req, res)) return;
   res.send('Hello from test route!');
 };
