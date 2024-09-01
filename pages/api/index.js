@@ -21,13 +21,17 @@ module.exports = async (req, res) => {
     let body = '';
     req.on('data', chunk => body += chunk.toString());
     req.on('end', async () => {
+      console.log("payload received: ", body)
       const { path, code } = JSON.parse(body);
       await fs.mkdir(`./${path}`, { recursive: true });
       const fullCode = corsUtility + code + '\n};';
       await fs.writeFile(`./${path}/index.js`, fullCode);
-      res.end('File written successfully');
+      console.log('File written successfully');
+      res.status(200);
+      res.end(JSON.stringify({status: "ok"}))
     });
   } else if (req.method === 'GET') {
+    res.status(200);
     res.end('POST: {"path": "route", "code": "function body"} to write file. GET: Show this message.');
   }
 }
