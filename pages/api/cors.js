@@ -1,5 +1,19 @@
-module.exports = function(req,res) {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+function cors(req, res) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+
+  Object.entries(headers).forEach(([key, value]) => res.setHeader(key, value));
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return true;
+  }
+
+  return false;
 }
+
+module.exports = cors;
