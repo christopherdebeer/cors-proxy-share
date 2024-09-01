@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const fs = require('fs').promises;
 
 const corsUtility = `
-const cors = require('./cors');
+const cors = require("${path.join(__dirname,'/cors')}");
 
 module.exports = (req, res) => {
   if (cors(req, res)) return;
@@ -25,8 +25,7 @@ module.exports = async (req, res) => {
       await fs.mkdir(`./${path}`, { recursive: true });
       const fullCode = corsUtility + code + '\n};';
       await fs.writeFile(`./${path}/index.js`, fullCode);
-      await fs.writeFile(`./${path}/cors.js`, await fs.readFile('./cors.js'));
-      res.end('Files written successfully');
+      res.end('File written successfully');
     });
   } else if (req.method === 'GET') {
     res.end('POST: {"path": "route", "code": "function body"} to write file. GET: Show this message.');
