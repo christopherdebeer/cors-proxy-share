@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 const fs = require('fs').promises;
-
+const cors = require('./cors');
 const corsUtility = `
 const cors = require("${path.join(__dirname,'/cors')}");
 
@@ -17,6 +17,7 @@ module.exports = (req, res) => {
 const secret = process.env.SECRET; // Get the secret from environment variables
 
 module.exports = async (req, res) => {
+  if (cors(req, res)) return;
   if (req.method === 'POST') {
     let body = '';
     req.on('data', chunk => body += chunk.toString());
