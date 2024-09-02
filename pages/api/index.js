@@ -21,8 +21,9 @@ module.exports = async (req, res) => {
     const { path, code } = req.body;
     try {
        const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-       const fnc = new AsyncFunction("req", "res", "cors", corsUtility + code)
-       return await fnc(req, res, cors);
+       
+       const fnc = new AsyncFunction("req", "res", "cors", "axios", corsUtility + code)
+       return await fnc(req, res, cors, axios);
     } catch(error) {
       res.status(400)
       res.end(JSON.stringify({error, message: error.message}))
