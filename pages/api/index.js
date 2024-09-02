@@ -19,9 +19,8 @@ const secret = process.env.SECRET; // Get the secret from environment variables
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
   if (req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => body += chunk.toString());
-    req.on('end', async () => {
+    let body = await req.text();
+    
       console.log("payload received: ", body)
       const { path, code } = JSON.parse(body);
       await fs.mkdir(`./${path}`, { recursive: true });
@@ -30,7 +29,7 @@ module.exports = async (req, res) => {
       console.log('File written successfully');
       res.status(200);
       res.end(JSON.stringify({status: "ok"}))
-    });
+  
   } else if (req.method === 'GET') {
     res.status(200);
     res.end('POST: {"path": "route", "code": "function body"} to write file. GET: Show this message.');
