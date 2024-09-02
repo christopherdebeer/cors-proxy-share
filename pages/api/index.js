@@ -8,9 +8,6 @@ const port = process.env.PORT || 3000;
 const fs = require('fs').promises;
 const cors = require('./cors');
 const corsUtility = `
-const cors = require("${path.join(__dirname,'/cors')}");
-
-module.exports = (req, res) => {
   if (cors(req, res)) return;
 
 `;
@@ -23,7 +20,7 @@ module.exports = async (req, res) => {
     console.log("payload received: ", body)
     const { path, code } = req.body;
     try {
-       const fnc = new Function("req","res", corsUtility + code + "\n}")
+       const fnc = new Function("req", "res", "cors", corsUtility + code)
        return fnc(req,res);
     } catch(error) {
       res.status(400)
