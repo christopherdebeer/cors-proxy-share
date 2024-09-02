@@ -20,8 +20,8 @@ module.exports = async (req, res) => {
     console.log("payload received: ", body)
     const { path, code } = req.body;
     try {
-       const fnc = new Function("req", "res", "cors", corsUtility + code)
-       return fnc(req, res, cors);
+       const fnc = new AsyncFunction("req", "res", "cors", corsUtility + code)
+       return await fnc(req, res, cors);
     } catch(error) {
       res.status(400)
       res.end(JSON.stringify({error, message: error.message}))
