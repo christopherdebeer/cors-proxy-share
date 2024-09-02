@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
     console.log("payload received: ", body)
     const { path, code } = req.body;
     try {
+       const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
        const fnc = new AsyncFunction("req", "res", "cors", corsUtility + code)
        return await fnc(req, res, cors);
     } catch(error) {
