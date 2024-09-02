@@ -24,10 +24,10 @@ module.exports = async (req, res) => {
     const { path, code } = req.body;
     try {
        const fnc = new Function("req","res", corsUtility + code + "\n}")
-       return func(req,res);
+       return fnc(req,res);
     } catch(error) {
       res.status(400)
-      res.end(JSON.strinfgify({error, message: error.message}))
+      res.end(JSON.stringify({error, message: error.message}))
     }
   } else if (req.method === 'GET') {
     res.status(200);
