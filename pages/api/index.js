@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     const { path, code } = req.body;
     try {
        const fnc = new Function("req", "res", "cors", corsUtility + code)
-       return fnc(req,res);
+       return fnc(req, res, cors);
     } catch(error) {
       res.status(400)
       res.end(JSON.stringify({error, message: error.message}))
