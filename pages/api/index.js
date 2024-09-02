@@ -19,10 +19,10 @@ const secret = process.env.SECRET; // Get the secret from environment variables
 module.exports = async (req, res) => {
   if (cors(req, res)) return;
   if (req.method === 'POST') {
-    let body = await req.text();
+    let body = req.body;
     
       console.log("payload received: ", body)
-      const { path, code } = JSON.parse(body);
+      const { path, code } = req.body;
       await fs.mkdir(`./${path}`, { recursive: true });
       const fullCode = corsUtility + code + '\n};';
       await fs.writeFile(`./${path}/index.js`, fullCode);
